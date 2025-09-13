@@ -1,0 +1,485 @@
+<!doctype html>
+<!--
+  Akeem's Portfolio — single-file HTML/CSS/JS
+  - Sleek, Apple-like minimal aesthetic
+  - Smooth motion graphics: animated blob, subtle parallax, reveal-on-scroll
+  - Tailored content from what you've told me: AI, EdTech, Cybersecurity, Fintech, Nursing/Medicine student, projects, ambitions, puppies, romantic-comedy fan
+
+  How to use:
+  1. Save this file as `index.html`.
+  2. Open in a modern browser (Chrome / Edge / Safari). For best visuals, serve via a simple static server (e.g. `npx serve` or `python -m http.server`).
+  3. Replace placeholder content, images, and links with your own.
+
+  Want a React/Tailwind version or an interactive CMS-backed version? Tell me and I'll generate it next.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Akeem — AI · EdTech · Cybersecurity · Fintech</title>
+  <meta name="description" content="Akeem — builder of education & fintech products, cybersecurity explorer, nursing student. Portfolio & aspirations." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ========================
+       variables & reset
+       ======================== */
+    :root{
+      --bg:#0f1115;
+      --card:#0f1720;
+      --muted:#98a0b3;
+      --glass: rgba(255,255,255,0.06);
+      --accent1: linear-gradient(135deg,#7afcff 0%, #5b7bff 50%, #8b5cff 100%);
+      --accent2: linear-gradient(135deg,#ff7ab6 0%, #ffb36b 100%);
+      --glass-2: rgba(255,255,255,0.04);
+      --radius: 16px;
+      --max-width: 1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 800px at 10% 10%, rgba(123,103,255,0.06), transparent),
+                  radial-gradient(800px 600px at 90% 85%, rgba(90,200,255,0.03), transparent),
+                  var(--bg);
+      color:#eaf0ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.4;
+      scroll-behavior:smooth;
+    }
+
+    a{color:inherit;text-decoration:none}
+
+    .container{max-width:var(--max-width);margin:0 auto;padding:48px 28px}
+
+    /* ========================
+       Top navigation
+       ======================== */
+    header{position:fixed;left:0;right:0;top:18px;z-index:60;display:flex;justify-content:center}
+    .nav{width:100%;max-width:var(--max-width);display:flex;align-items:center;justify-content:space-between;padding:10px;border-radius:30px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008));backdrop-filter: blur(6px);box-shadow:0 6px 30px rgba(2,6,23,0.6)}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-weight:800;font-family:'Space Grotesk';font-size:20px;background:var(--accent1);box-shadow:0 6px 30px rgba(90,90,120,0.12)}
+    nav ul{display:flex;gap:18px;align-items:center;margin:0;padding:0;list-style:none}
+    nav li{font-weight:600;color:rgba(255,255,255,0.85)}
+    .cta{padding:8px 14px;border-radius:12px;background:linear-gradient(90deg,#7afcff,#5b7bff);color:#051022;font-weight:700}
+
+    /* ========================
+       Hero
+       ======================== */
+    .hero{min-height:82vh;display:grid;align-items:center}
+    .hero-grid{display:grid;grid-template-columns:1fr 420px;gap:48px;align-items:center}
+    .hero-left{max-width:720px}
+    .eyebrow{display:inline-flex;align-items:center;gap:10px;padding:8px 12px;background:var(--glass);border-radius:999px;color:var(--muted);font-weight:600}
+    h1{font-family:'Space Grotesk';font-weight:800;margin:18px 0;font-size: clamp(34px, 6vw, 54px);line-height:1.02}
+    .hero-sub{color:var(--muted);font-size:16px;margin-bottom:22px}
+
+    .hero-actions{display:flex;gap:12px}
+    .btn{padding:12px 18px;border-radius:12px;font-weight:700;cursor:pointer;border:0}
+    .btn-primary{background:var(--accent1);box-shadow:0 8px 30px rgba(91,123,255,0.18);color:#041025}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+
+    /* hero art */
+    .hero-card{position:relative;padding:26px;border-radius:20px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 20px 60px rgba(2,6,23,0.6);min-height:380px;display:flex;flex-direction:column;justify-content:center;align-items:center}
+
+    /* animated blob */
+    .blob{position:absolute;inset:0;pointer-events:none;z-index:0}
+    .blob svg{width:110%;height:110%;transform-origin:center;filter:blur(26px);opacity:0.95}
+    @keyframes blobFloat{0%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(6deg)}100%{transform:translateY(0) rotate(0deg)}}
+    .blob svg{animation:blobFloat 8s ease-in-out infinite}
+
+    /* small showcase inside hero card */
+    .project-quick{z-index:2;width:100%;max-width:320px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+    .p-title{font-weight:700;font-family:'Space Grotesk'}
+    .p-desc{color:var(--muted);font-size:13px}
+
+    /* ========================
+       Sections & cards
+       ======================== */
+    section{padding:72px 0}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:20px;border-radius:14px;backdrop-filter: blur(6px);box-shadow:0 12px 40px rgba(2,6,23,0.5);transition:transform .45s cubic-bezier(.2,.9,.3,1),box-shadow .3s}
+    .card:hover{transform:translateY(-10px)}
+    .small{font-size:13px;color:var(--muted)}
+
+    /* projects */
+    .project{display:flex;gap:16px;align-items:flex-start}
+    .project-visual{width:88px;height:64px;border-radius:12px;background:linear-gradient(180deg,#1a2130,#0c1016);display:grid;place-items:center;font-weight:800}
+    .project-body h3{margin:0 0 6px 0}
+
+    /* skills */
+    .chips{display:flex;flex-wrap:wrap;gap:10px}
+    .chip{padding:8px 12px;border-radius:999px;background:var(--glass);font-weight:600;color:var(--muted)}
+
+    /* timeline */
+    .timeline{border-left:2px solid rgba(255,255,255,0.03);padding-left:26px}
+    .timeline-item{margin-bottom:24px}
+    .timeline-item h4{margin:0}
+
+    /* contact */
+    .contact-card{display:flex;gap:18px;align-items:center}
+    .avatar{width:84px;height:84px;border-radius:14px;background:linear-gradient(90deg,#fff, #fff);display:grid;place-items:center;color:#061023;font-weight:900;font-size:22px}
+
+    /* footer */
+    footer{padding:36px 0;color:var(--muted);text-align:center}
+
+    /* reveal animations */
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .8s ease, transform .8s cubic-bezier(.2,.9,.3,1)}
+    .reveal.in-view{opacity:1;transform:none}
+
+    /* responsive */
+    @media (max-width:980px){
+      .hero-grid{grid-template-columns:1fr;}
+      nav ul{display:none}
+      .brand{gap:8px}
+      .container{padding:28px}
+      .grid-3{grid-template-columns:repeat(1,1fr)}
+      .hero-card{min-height:320px}
+    }
+
+    @media (max-width:480px){
+      header{top:10px}
+      .logo{width:40px;height:40px;font-size:18px;border-radius:10px}
+      h1{font-size:28px}
+    }
+
+    /* Accessibility focus */
+    a:focus, button:focus{outline:2px solid rgba(120,160,255,0.24);outline-offset:4px}
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav" role="navigation" aria-label="Main navigation">
+      <div class="brand">
+        <div class="logo" aria-hidden>AK</div>
+        <div style="line-height:1">
+          <div style="font-weight:700">Akeem</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">Creator · Student · Builder</div>
+        </div>
+      </div>
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#contact" class="cta">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-left">
+          <span class="eyebrow">Portfolio • Aspirations</span>
+          <h1>Hi — I'm <span style="background:linear-gradient(90deg,#fff, #9df1ff);-webkit-background-clip:text;background-clip:text;color:transparent">Akeem</span> — building AI & education tech for impact.</h1>
+          <p class="hero-sub">Nursing & medicine student by day, software creator by night. I build AI-powered education tools, fintech infrastructure, and cybersecurity systems with the ambition to scale to millions of users.</p>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary" id="workBtn">Explore Projects</button>
+            <a href="#contact" class="btn btn-ghost">Let's collaborate</a>
+          </div>
+
+          <div style="margin-top:28px;display:flex;gap:10px;align-items:center">
+            <div class="small">Currently learning:</div>
+            <div class="chips">
+              <span class="chip">Python</span>
+              <span class="chip">AI / ML</span>
+              <span class="chip">Cybersecurity</span>
+              <span class="chip">Product Design</span>
+            </div>
+          </div>
+
+          <div style="margin-top:28px;color:var(--muted);font-size:14px">Fun: I love puppies 🐶 and romantic comedies — they keep creativity human.</div>
+        </div>
+
+        <div class="hero-card" aria-hidden>
+          <div class="blob">
+            <!-- Animated colorful blob (SVG) -->
+            <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#7afcff" stop-opacity="0.95" />
+                  <stop offset="50%" stop-color="#5b7bff" stop-opacity="0.85" />
+                  <stop offset="100%" stop-color="#8b5cff" stop-opacity="0.7" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(300,300)">
+                <path fill="url(#g1)" d="M120,-168C153,-131,164,-78,170,-21C176,36,176,96,141,131C106,166,36,176,-26,176C-87,176,-174,156,-197,107C-220,59,-179,-26,-156,-83C-133,-140,-128,-168,-88,-197C-48,-226,8,-256,60,-243C112,-231,87,-205,120,-168Z"/>
+              </g>
+            </svg>
+          </div>
+
+          <div class="project-quick" style="position:relative">
+            <div class="p-title">MathFlow — AI Math Tutor</div>
+            <div class="p-desc">A prototype that solves and explains complex math problems step-by-step with voice explanations and exam-style practice.</div>
+            <div style="display:flex;gap:10px;margin-top:10px;align-items:center">
+              <div class="chip">AI</div>
+              <div class="chip">EdTech</div>
+              <div class="chip">Voice</div>
+            </div>
+          </div>
+
+          <div style="position:absolute;bottom:24px;right:24px;color:var(--muted);font-size:12px;z-index:2">Prototype • Learning phase</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <div class="reveal" id="about-inner">
+          <div style="display:flex;justify-content:space-between;gap:28px;align-items:flex-start;flex-wrap:wrap">
+            <div style="flex:1;min-width:320px">
+              <h2 style="font-family:'Space Grotesk'">About</h2>
+              <p class="small" style="max-width:720px">I'm Akeem, an 18-year-old nursing and medicine student who builds software — particularly in AI for education, fintech, and cybersecurity. I combine academic study (CHM 103 and core sciences) with relentless product focus. I aim to create massively useful products — learning platforms used by millions, fast and affordable cross-border payments for Africans, and robust fraud-detection systems for banks. I'm obsessed with product-market fit and shipping clean, fast software.</p>
+            </div>
+            <div style="width:340px">
+              <div class="card">
+                <div style="display:flex;gap:12px;align-items:center">
+                  <div class="avatar">AK</div>
+                  <div>
+                    <div style="font-weight:800">Akeem</div>
+                    <div class="small">Nursing & Medicine Student • Aspiring Founder</div>
+                  </div>
+                </div>
+
+                <div style="margin-top:12px" class="small">Location: Nigeria (global focus). Languages: English. Age: 18. Current focus: launching an EdTech math AI, building fintech rails, exploring national AI infrastructure for Africa.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+        <h2 style="font-family:'Space Grotesk'">Selected Projects</h2>
+        <p class="small">A curated shortlist of prototypes, experiments and plans — from quick AI proofs-of-concept to system-level fintech & infrastructure ideas.</p>
+
+        <div style="margin-top:20px" class="grid-3">
+          <article class="card reveal">
+            <div class="project">
+              <div class="project-visual">M</div>
+              <div class="project-body">
+                <h3>MathFlow — AI Math Tutor</h3>
+                <div class="small">Interactive math solver & tutor with step explanations, voice readouts, and practice exams. Goal: make math fun like a Duolingo for math.</div>
+                <div style="margin-top:8px" class="small">Tech: Python, LLMs, voice TTS, web stack (HTML/CSS/JS).</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="project">
+              <div class="project-visual">B</div>
+              <div class="project-body">
+                <h3>Buyware — Local Marketplace</h3>
+                <div class="small">A platform for peer-to-peer commerce with a plan for partnerships with malls & drone delivery. Long-term: integrate with global suppliers and logistics.</div>
+                <div style="margin-top:8px" class="small">Tech: React/PWA, payments, logistics APIs.</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="project">
+              <div class="project-visual">F</div>
+              <div class="project-body">
+                <h3>FinRails — Fast Cross-Border Wallet</h3>
+                <div class="small">Bank-like service focused on fast, cheap African international payments and developer-friendly APIs. Focus: user experience & fraud prevention.</div>
+                <div style="margin-top:8px" class="small">Tech: payments infra, security, compliance tooling.</div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div style="margin-top:18px" class="grid-3">
+          <article class="card reveal">
+            <div class="project">
+              <div class="project-visual">C</div>
+              <div class="project-body">
+                <h3>CyberGuard — Fraud Detection</h3>
+                <div class="small">AI systems for banks & schools to detect fraud and suspicious behavior. Focused on explainability and real-time alerts.</div>
+                <div style="margin-top:8px" class="small">Tech: ML, anomaly detection, cloud infra.</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="project">
+              <div class="project-visual">N</div>
+              <div class="project-body">
+                <h3>National AI Core — Research Concept</h3>
+                <div class="small">A strategic, pan-African AI & data infra initiative: governance, compute sharing, and local datasets to reduce digital dependency.</div>
+                <div style="margin-top:8px" class="small">Stage: research & strategy.</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="project">
+              <div class="project-visual">P</div>
+              <div class="project-body">
+                <h3>CryptoPilot — Portfolio Manager</h3>
+                <div class="small">AI-driven crypto portfolio tool with analytics, alerts, and a plan for trade execution. Goal: strong AI analysis for profitable decisions.</div>
+                <div style="margin-top:8px" class="small">Tech: exchanges APIs, ML, data pipelines.</div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container">
+        <h2 style="font-family:'Space Grotesk'">Skills & Tools</h2>
+        <div style="margin-top:12px" class="card reveal">
+          <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:center">
+            <div style="flex:1;min-width:220px">
+              <div class="small">Languages & frameworks</div>
+              <div style="margin-top:8px" class="chips">
+                <span class="chip">Python</span>
+                <span class="chip">JavaScript</span>
+                <span class="chip">HTML & CSS</span>
+                <span class="chip">React</span>
+                <span class="chip">FastAPI / Flask</span>
+              </div>
+            </div>
+            <div style="flex:1;min-width:220px">
+              <div class="small">AI & Data</div>
+              <div style="margin-top:8px" class="chips">
+                <span class="chip">LLMs</span>
+                <span class="chip">NLP</span>
+                <span class="chip">Anomaly Detection</span>
+                <span class="chip">Data pipelines</span>
+              </div>
+            </div>
+            <div style="flex:1;min-width:220px">
+              <div class="small">Dev & Product</div>
+              <div style="margin-top:8px" class="chips">
+                <span class="chip">Git</span>
+                <span class="chip">Docker</span>
+                <span class="chip">Figma</span>
+                <span class="chip">Product Design</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="timeline">
+      <div class="container">
+        <h2 style="font-family:'Space Grotesk'">Journey</h2>
+        <div style="margin-top:14px" class="card reveal timeline">
+          <div class="timeline-item">
+            <h4>2025 — Present</h4>
+            <div class="small">University (Nursing & Medicine), studying CHM 103. Building prototypes: MathFlow, FinRails.</div>
+          </div>
+
+          <div class="timeline-item">
+            <h4>2024 — 2025</h4>
+            <div class="small">Started coding seriously, learning Python, planning fintech and AI projects. Early prototypes and research for pan-African AI infra.</div>
+          </div>
+
+          <div class="timeline-item">
+            <h4>Goals</h4>
+            <div class="small">Ship a consumer-facing EdTech product with 1M+ monthly users, launch a low-cost cross-border payments product, and build fraud detection tooling for banks.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <h2 style="font-family:'Space Grotesk'">Get in touch</h2>
+        <div style="margin-top:12px;display:flex;gap:24px;flex-wrap:wrap">
+          <div style="flex:1;min-width:320px" class="card reveal contact-card">
+            <div style="flex:1">
+              <div style="font-weight:800">Let's build something</div>
+              <div class="small" style="margin-top:8px">If you want to collaborate, hire me, or just chat about AI/EdTech/Fintech — send a message.</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:700">Email</div>
+              <a href="mailto:akeem@example.com" class="small" style="color:var(--muted)">akeem@example.com</a>
+              <div style="margin-top:10px" class="small">Twitter: <a href="#" style="color:var(--muted)">@akeem</a></div>
+            </div>
+          </div>
+
+          <form style="flex:1;min-width:320px" class="card reveal" onsubmit="handleSubmit(event)">
+            <label class="small">Your name
+              <input name="name" required style="width:100%;margin-top:6px;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit" />
+            </label>
+            <label class="small" style="display:block;margin-top:12px">Message
+              <textarea name="message" rows="5" required style="width:100%;margin-top:6px;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit"></textarea>
+            </label>
+            <div style="margin-top:12px;text-align:right">
+              <button type="submit" class="btn btn-primary">Send</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <div style="display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap">
+          <div style="font-weight:700">Akeem</div>
+          <div class="small">© "Your Year" • Built with care</div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Smooth reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) entry.target.classList.add('in-view');
+      });
+    }, {threshold: 0.12});
+    reveals.forEach(r => io.observe(r));
+
+    // Hero button anchor
+    document.getElementById('workBtn').addEventListener('click', () => {
+      document.getElementById('projects').scrollIntoView({behavior: 'smooth'});
+    });
+
+    // Simple form handler (demo) — replace with actual integration
+    function handleSubmit(e){
+      e.preventDefault();
+      const name = e.target.name.value.trim();
+      const msg = e.target.message.value.trim();
+      if(!name || !msg) return alert('Please fill both fields.');
+      // In prod you'd POST to an email API or server. For now: emulate success
+      alert(`Thanks ${name}! Message received — I'll reply to ${'akeem@example.com'}.`);
+      e.target.reset();
+    }
+
+    // Subtle parallax for the blob on mouse move
+    (function(){
+      const blob = document.querySelector('.blob svg');
+      if(!blob) return;
+      const rect = blob.getBoundingClientRect();
+      window.addEventListener('mousemove', (e)=>{
+        const x = (e.clientX - window.innerWidth/2) / window.innerWidth;
+        const y = (e.clientY - window.innerHeight/2) / window.innerHeight;
+        blob.style.transform = `translate3d(${x*18}px, ${y*18}px, 0) rotate(${x*6}deg)`;
+      });
+    })();
+
+    // Small progressive enhancement: keyboard navigation for project cards
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'k' && (e.ctrlKey || e.metaKey)){
+        // open contact quickly
+        document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+      }
+    });
+  </script>
+</body>
+</html>
+
